@@ -95,8 +95,6 @@ class LineNumberRulerView: NSRulerView {
 			if let layoutManager = textView.layoutManager {
 			
 				let relativePoint = self.convertPoint(NSZeroPoint, fromView: textView)
-				//FIXME:
-				//fatal error: unexpectedly found nil while unwrapping an Optional value
 				let lineNumberAttributes = [NSFontAttributeName: textView.font!, NSForegroundColorAttributeName: NSColor.grayColor()]
 				let drawLineNumber = { (lineNumberString:String, y:CGFloat) -> Void in
 					let attString = NSAttributedString(string: lineNumberString, attributes: lineNumberAttributes)
