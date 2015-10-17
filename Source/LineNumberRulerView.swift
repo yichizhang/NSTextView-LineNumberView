@@ -35,7 +35,7 @@ extension NSTextView {
 			return objc_getAssociatedObject(self, &LineNumberViewAssocObjKey) as! LineNumberRulerView
 		}
 		set {
-			objc_setAssociatedObject(self, &LineNumberViewAssocObjKey, newValue, objc_AssociationPolicy(OBJC_ASSOCIATION_RETAIN_NONATOMIC))
+			objc_setAssociatedObject(self, &LineNumberViewAssocObjKey, newValue, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
 		}
 	}
 	
@@ -98,16 +98,16 @@ class LineNumberRulerView: NSRulerView {
 				let lineNumberAttributes = [NSFontAttributeName: textView.font!, NSForegroundColorAttributeName: NSColor.grayColor()]
 				let drawLineNumber = { (lineNumberString:String, y:CGFloat) -> Void in
 					let attString = NSAttributedString(string: lineNumberString, attributes: lineNumberAttributes)
-					let x = 35 - attString.size.width
+					let x = 35 - attString.size().width
 					attString.drawAtPoint(NSPoint(x: x, y: relativePoint.y + y))
 				}
 				
 				let visibleGlyphRange = layoutManager.glyphRangeForBoundingRect(textView.visibleRect, inTextContainer: textView.textContainer!)
 				let firstVisibleGlyphCharacterIndex = layoutManager.characterIndexForGlyphAtIndex(visibleGlyphRange.location)
 				
-				let newLineRegex = NSRegularExpression(pattern: "\n", options: .allZeros, error: nil)!
+				let newLineRegex = try! NSRegularExpression(pattern: "\n", options: [])
 				// The line number for the first visible line
-				var lineNumber = newLineRegex.numberOfMatchesInString(textView.string!, options: .allZeros, range: NSMakeRange(0, firstVisibleGlyphCharacterIndex)) + 1
+				var lineNumber = newLineRegex.numberOfMatchesInString(textView.string!, options: [], range: NSMakeRange(0, firstVisibleGlyphCharacterIndex)) + 1
 				
 				var glyphIndexForStringLine = visibleGlyphRange.location
 				
