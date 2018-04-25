@@ -29,6 +29,10 @@ class ViewController: NSViewController {
 
 	@IBOutlet var mainTextView: NSTextView!
 	
+    var document: Document? {
+        return view.window?.windowController?.document as? Document
+    }
+
 	override func viewDidLoad() {
 		super.viewDidLoad()
 
@@ -36,10 +40,23 @@ class ViewController: NSViewController {
 		mainTextView.lnv_setUpLineNumberView()
 	}
 
+    override func viewWillAppear() {
+        super.viewWillAppear()
+        
+        if let document = self.document {
+            document.viewController = self
+            
+            if let documentContents = document.documentContent {
+                self.mainTextView.string = documentContents
+            }
+        }
+    }
+    
 	override var representedObject: Any? {
 		didSet {
 			// Update the view, if already loaded.
-			
 		}
-	}
+    }
+        
+    
 }
